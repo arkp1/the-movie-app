@@ -1,21 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import movieData from "./Utils/Utils";
+import movieData from "../Utils/Utils";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-function Home() {
+function Shows() {
   const [page, setPage] = useState(1);
   const {
-    data: trendingItems,
+    data: trendingShows,
     isLoading,
     isFetching,
     isError,
     error,
   } = useQuery({
-    queryKey: ["trending-movies", page],
+    queryKey: ["trending-shows", page],
     queryFn: async () => {
-      const response = await movieData("movies/trending", { page, limit: 20 });
-      console.log(response)
+      const response = await movieData("shows/trending", { page, limit: 20 });
       if (!response) throw new Error("No data received");
       return response;
     },
@@ -23,30 +22,24 @@ function Home() {
   });
 
   // Transform the data for rendering
-  const movies = trendingItems?.map((item) => {
-    // In the movies transformation part, change the posterUrl to:
-    const posterUrl = item.movie.ids.imdb
-      ? `https://img.omdbapi.com/?i=${item.movie.ids.imdb}&apikey=${
-          import.meta.env.VITE_OMDB_API_KEY
-        }`
-      : `https://image.tmdb.org/t/p/original/${item.movie.ids.tmdb}.jpg`;
-    const id =
-      item?.movie?.ids?.imdb ||
-      item?.movie?.ids?.slug ||
-      item?.movie?.ids?.trakt;
+  const shows = trendingShows?.map((item) => {
+    const posterUrl = item.show.ids.imdb
+      ? `https://img.omdbapi.com/?i=${item.show.ids.imdb}&apikey=${import.meta.env.VITE_OMDB_API_KEY}`
+      : `https://image.tmdb.org/t/p/original/${item.show.ids.tmdb}.jpg`;
+    
+    const id = item.show.ids.imdb || item.show.ids.slug || item.show.ids.trakt;
 
     return {
       id: id,
-      title: item.movie.title,
-      year: item.movie.year,
-      poster:
-        posterUrl ||
-        `https://image.tmdb.org/t/p/original/${item.movie.ids.tmdb}.jpg`,
+      title: item.show.title,
+      year: item.show.year,
+      poster: posterUrl,
+      watchers: item.watchers,
     };
   });
 
   // Pagination logic
-  const totalPages = 10; // Adjust based on your API's total pages
+  const totalPages = 10;
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -58,7 +51,7 @@ function Home() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-red-500 bg-red-50 p-4 rounded-lg">
-          Error loading movies: {error.message}
+          Error loading shows: {error.message}
         </div>
       </div>
     );
@@ -69,43 +62,38 @@ function Home() {
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <div className="animate-pulse text-xl text-gray-600">
-            Loading trending movies...
+            Loading trending shows...
           </div>
         </div>
       ) : (
         <>
           <h1 className="text-3xl font-bold mb-8 text-gray-800">
-            Trending Movies
+            Trending Shows
           </h1>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {movies?.map((movie) => (
+            {shows?.map((show) => (
               <Link
-                key={`${movie.id}-${page}`}
-                to={`/movies/${movie.id}`}
+                key={`${show.id}-${page}`}
+                to={`/shows/${show.id}`}
                 className="group"
               >
-                <div className="relative h-full md:h-full overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
-                  {movie?.poster ? (
-                    <img
-                      src={movie.poster}
-                      alt={movie.title}
-                      className="w-full h-fit object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={movie.poster}
-                      alt={movie.title}
-                      className="w-full h-80 object-cover"
-                    />
-                  )}
+                <div className="relative h-full overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                  <img
+                    src={show.poster}
+                    alt={show.title}
+                    className="w-full h-80 object-cover"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="p-4 absolute bottom-0 left-0 right-0 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-sm font-medium">{movie.year}</p>
+                    <p className="text-sm font-medium">{show.year}</p>
+                    <p className="text-xs">
+                      {show.watchers.toLocaleString()} watchers
+                    </p>
                   </div>
                   <div className="p-2 bg-white">
                     <h3 className="font-semibold text-gray-800 truncate">
-                      {movie.title}
+                      {show.title}
                     </h3>
                   </div>
                 </div>
@@ -170,4 +158,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Shows;

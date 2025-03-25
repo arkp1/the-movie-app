@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import movieData from "./Utils/Utils";
+import movieData from "../Utils/Utils";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-function Home() {
+function Popular() {
   const [page, setPage] = useState(1);
   const {
-    data: trendingItems,
+    data: popularItems,
     isLoading,
     isFetching,
     isError,
     error,
   } = useQuery({
-    queryKey: ["trending-movies", page],
+    queryKey: ["popular-movies", page],
     queryFn: async () => {
-      const response = await movieData("movies/trending", { page, limit: 20 });
+      const response = await movieData("movies/popular", {page, limit:20});
       console.log(response)
       if (!response) throw new Error("No data received");
       return response;
@@ -23,25 +23,18 @@ function Home() {
   });
 
   // Transform the data for rendering
-  const movies = trendingItems?.map((item) => {
-    // In the movies transformation part, change the posterUrl to:
-    const posterUrl = item.movie.ids.imdb
-      ? `https://img.omdbapi.com/?i=${item.movie.ids.imdb}&apikey=${
-          import.meta.env.VITE_OMDB_API_KEY
-        }`
-      : `https://image.tmdb.org/t/p/original/${item.movie.ids.tmdb}.jpg`;
-    const id =
-      item?.movie?.ids?.imdb ||
-      item?.movie?.ids?.slug ||
-      item?.movie?.ids?.trakt;
+  const movies = popularItems?.map((item) => {
+    const posterUrl = `https://img.omdbapi.com/?i=${item.ids.imdb}&apikey=${
+      import.meta.env.VITE_OMDB_API_KEY
+    }`;
+    const id = item?.ids?.imdb || item?.ids?.slug || item?.ids?.trakt;
 
     return {
       id: id,
-      title: item.movie.title,
-      year: item.movie.year,
+      title: item.title,
+      year: item.year,
       poster:
-        posterUrl ||
-        `https://image.tmdb.org/t/p/original/${item.movie.ids.tmdb}.jpg`,
+        posterUrl || `https://image.tmdb.org/t/p/original/${item.ids.tmdb}.jpg`,
     };
   });
 
@@ -68,14 +61,12 @@ function Home() {
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-pulse text-xl text-gray-600">
-            Loading trending movies...
-          </div>
+          <div className="animate-pulse text-xl text-gray-600">Loading...</div>
         </div>
       ) : (
         <>
           <h1 className="text-3xl font-bold mb-8 text-gray-800">
-            Trending Movies
+            Popular Movies
           </h1>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -85,20 +76,15 @@ function Home() {
                 to={`/movies/${movie.id}`}
                 className="group"
               >
-                <div className="relative h-full md:h-full overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
-                  {movie?.poster ? (
-                    <img
-                      src={movie.poster}
-                      alt={movie.title}
-                      className="w-full h-fit object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={movie.poster}
-                      alt={movie.title}
-                      className="w-full h-80 object-cover"
-                    />
-                  )}
+                <div className="relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                  <img
+                    src={movie.poster}
+                    alt={movie.title}
+                    className="w-full h-80 max-h-full object-cover"
+                    onError={(e) => {
+                      e.target.classList.add("bg-gray-200");
+                    }}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="p-4 absolute bottom-0 left-0 right-0 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-sm font-medium">{movie.year}</p>
@@ -170,4 +156,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Popular;
