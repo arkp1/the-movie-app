@@ -61,7 +61,7 @@ function Header({ toggleDarkMode, isDark }) {
               className={`border ${isDark ? "bg-zinc-900 border-white" : "bg-white border-zinc-900"} w-60 h-8 indent-3 rounded-2xl max-md:w-40 max-md:indent-2 max-md:text-sm`}
               placeholder="Search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)} 
             />
             <Search
               strokeWidth={2.25}
