@@ -96,6 +96,7 @@ function Home() {
                       src={movie.poster}
                       alt={movie.title}
                       className="w-full h-80 object-cover"
+                      loading="lazy"
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -103,7 +104,7 @@ function Home() {
                     <p className="text-sm font-medium">{movie.year}</p>
                   </div>
                   <div className="p-2">
-                    <h3 className="font-semibold truncate">
+                    <h3 className="font-medium truncate">
                       {movie.title}
                     </h3>
                   </div>

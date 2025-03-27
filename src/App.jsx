@@ -1,7 +1,6 @@
 import Header from "./Components/Header";
 import { useEffect, useState } from "react";
 import Content from "./Components/Content";
-import movieData from "./Utils/Utils";
 import VideoPlayer from "./Vidplayer";
 import { Route, Routes } from "react-router-dom";
 import Popular from "./Components/Popular";
@@ -45,7 +44,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <div className="bg-[#F8F8FF] text-black dark:bg-zinc-900 dark:text-white min-h-full">
+        <div className="bg-[#F8F8FF] text-black dark:bg-zinc-900 dark:text-[#F8F8FF] min-h-screen">
         <div className="pt-16">
         <Header toggleDarkMode={toggleDarkMode} isDark={isDark}/>
         </div>

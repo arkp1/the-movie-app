@@ -65,7 +65,7 @@ function MediaDetails() {
   console.log(trailerEmbedUrl);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white-50 font-Figtree mb-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-zinc-900 font-Figtree pb-2">
       {/* Poster Column */}
       <div className="mt-6 flex justify-center">
         <div className="overflow-hidden shadow-lg w-[340px] h-[500px] max-md:w-[280px] max-md:h-[420px]">
@@ -95,7 +95,7 @@ function MediaDetails() {
           </h1>
         </div>
 
-        <div className="font-medium text-lg md:text-xl max-md:text-base">
+        <div className="font-normal text-lg md:text-xl max-md:text-base">
           <p>{media.overview || "No overview available."}</p>
 
           {media.tagline && (
@@ -112,14 +112,12 @@ function MediaDetails() {
             </p>
           </>
 
-          {mediaType === "show" && (
-            <>
-              <p>
-                <span className="font-bold">Release Date: </span>
-                {media.released || "N/A"}
-              </p>
-            </>
-          )}
+          <>
+            <p>
+              <span className="font-bold">Release Date: </span>
+              {media.released || "N/A"}
+            </p>
+          </>
 
           <p>
             <span className="font-bold">Genre: </span>
@@ -134,17 +132,17 @@ function MediaDetails() {
             {media.status || "N/A"}
           </p>
           <p>
-          <span className="font-bold">Trailer: </span>
-          <iframe
-            src={trailerEmbedUrl}
-            frameborder="0"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            title="video"
-            width={600}
-            height={300}
-          />
-        </p>
+            <span className="font-bold">Trailer: </span>
+            <iframe
+              src={trailerEmbedUrl}
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="video"
+              width={400}
+              height={200}
+            />
+          </p>
         </div>
       </div>
     </div>
