@@ -1,0 +1,3 @@
+- Watchlist
+- Posters from rapidAPi
+- dark mode icon
