@@ -22,9 +22,8 @@ function Home() {
     keepPreviousData: true,
   });
 
-  // Transform the data for rendering
+  //data for rendering
   const movies = trendingItems?.map((item) => {
-    // In the movies transformation part, change the posterUrl to:
     const posterUrl = item.movie.ids.imdb
       ? `https://img.omdbapi.com/?i=${item.movie.ids.imdb}&apikey=${
           import.meta.env.VITE_OMDB_API_KEY
@@ -46,7 +45,7 @@ function Home() {
   });
 
   // Pagination logic
-  const totalPages = 10; // Adjust based on your API's total pages
+  const totalPages = 10; //based on API's total pages
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {

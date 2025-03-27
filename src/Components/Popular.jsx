@@ -22,7 +22,6 @@ function Popular() {
     keepPreviousData: true,
   });
 
-  // Transform the data for rendering
   const movies = popularItems?.map((item) => {
     const posterUrl = `https://img.omdbapi.com/?i=${item.ids.imdb}&apikey=${
       import.meta.env.VITE_OMDB_API_KEY
@@ -39,7 +38,7 @@ function Popular() {
   });
 
   // Pagination logic
-  const totalPages = 10; // Adjust based on your API's total pages
+  const totalPages = 10; //based on API's total pages
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
