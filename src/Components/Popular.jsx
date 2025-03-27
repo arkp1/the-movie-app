@@ -65,7 +65,7 @@ function Popular() {
         </div>
       ) : (
         <>
-          <h1 className="text-3xl font-bold mb-8 text-gray-800">
+          <h1 className="text-3xl font-bold mb-8">
             Popular Movies
           </h1>
 
@@ -89,8 +89,8 @@ function Popular() {
                   <div className="p-4 absolute bottom-0 left-0 right-0 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-sm font-medium">{movie.year}</p>
                   </div>
-                  <div className="p-2 bg-white">
-                    <h3 className="font-semibold text-gray-800 truncate">
+                  <div className="p-2">
+                    <h3 className="font-semibold truncate">
                       {movie.title}
                     </h3>
                   </div>

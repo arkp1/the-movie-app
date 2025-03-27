@@ -67,7 +67,7 @@ function Shows() {
         </div>
       ) : (
         <>
-          <h1 className="text-3xl font-bold mb-8 text-gray-800">
+          <h1 className="text-3xl font-bold mb-8">
             Trending Shows
           </h1>
 
@@ -78,7 +78,7 @@ function Shows() {
                 to={`/shows/${show.id}`}
                 className="group"
               >
-                <div className="relative h-full overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
+                <div className="relative h-full overflow-hidden rounded-lg transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1">
                   <img
                     src={show.poster}
                     alt={show.title}
@@ -91,8 +91,8 @@ function Shows() {
                       {show.watchers.toLocaleString()} watchers
                     </p>
                   </div>
-                  <div className="p-2 bg-white">
-                    <h3 className="font-semibold text-gray-800 truncate">
+                  <div className="p-2">
+                    <h3 className="font-semibold truncate">
                       {show.title}
                     </h3>
                   </div>

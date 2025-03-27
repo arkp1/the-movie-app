@@ -54,10 +54,20 @@ function MediaDetails() {
     ? `https://image.tmdb.org/t/p/original/${media.ids.tmdb}.jpg`
     : null;
 
+  //Embed URL converter function
+  function convertToEmbedUrl(url) {
+    const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+  }
+
+  const trailerUrl = media.trailer;
+  const trailerEmbedUrl = convertToEmbedUrl(trailerUrl);
+  console.log(trailerEmbedUrl);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white-50 font-Figtree">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white-50 font-Figtree mb-3">
       {/* Poster Column */}
-      <div className="mt-4 flex justify-center">
+      <div className="mt-6 flex justify-center">
         <div className="overflow-hidden shadow-lg w-[340px] h-[500px] max-md:w-[280px] max-md:h-[420px]">
           {posterUrl ? (
             <img
@@ -75,38 +85,38 @@ function MediaDetails() {
       </div>
 
       {/* Details Column */}
-      <div className="flex flex-col gap-2 pt-5 pr-4 items-center md:items-start px-4 max-md:px-2">
+      <div className="flex flex-col gap-2 pt-6 pr-4 items-center md:items-start px-4 max-md:px-2">
         <div className="flex flex-col flex-wrap items-center">
-          <h1 className="font-extrabold text-3xl md:text-4xl max-md:text-2xl text-center">
+          <h1 className="font-extrabold text-3xl md:text-4xl max-md:text-2xl text-pretty">
             {media.title} ({media.year || "N/A"})
+            <span className="font-normal text-base md:text-xl pl-3">
+              {`${media.runtime} mins` || "N/A"}
+            </span>
           </h1>
         </div>
 
         <div className="font-medium text-lg md:text-xl max-md:text-base">
           <p>{media.overview || "No overview available."}</p>
 
-          {mediaType === "movie" && (
-            <>
-              <p>
-                <span className="font-bold">Runtime: </span>
-                {media.runtime ? `${media.runtime} mins` : "N/A"}
-              </p>
-              <p>
-                <span className="font-bold">Certification: </span>
-                {media.certification || "N/A"}
-              </p>
-            </>
+          {media.tagline && (
+            <p className="italic">
+              <span className="font-bold">Tagline: </span>
+              {media.tagline}
+            </p>
           )}
+
+          <>
+            <p>
+              <span className="font-bold">Certification: </span>
+              {media.certification || "N/A"}
+            </p>
+          </>
 
           {mediaType === "show" && (
             <>
               <p>
-                <span className="font-bold">Status: </span>
-                {media.status || "N/A"}
-              </p>
-              <p>
-                <span className="font-bold">Network: </span>
-                {media.network || "N/A"}
+                <span className="font-bold">Release Date: </span>
+                {media.released || "N/A"}
               </p>
             </>
           )}
@@ -119,12 +129,22 @@ function MediaDetails() {
             <span className="font-bold">Rating: </span>
             {media.rating ? Math.floor(media.rating * 10) / 10 : "N/A"}
           </p>
-          {media.tagline && (
-            <p className="italic">
-              <span className="font-bold">Tagline: </span>
-              {media.tagline}
-            </p>
-          )}
+          <p>
+            <span className="font-bold">Status: </span>
+            {media.status || "N/A"}
+          </p>
+          <p>
+          <span className="font-bold">Trailer: </span>
+          <iframe
+            src={trailerEmbedUrl}
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            title="video"
+            width={600}
+            height={300}
+          />
+        </p>
         </div>
       </div>
     </div>
