@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, Sun, Moon } from "lucide-react";
+import { CiDark } from "react-icons/ci";
 import movieData from "../Utils/Utils";
 
 function Header({ toggleDarkMode, isDark }) {
@@ -45,18 +46,20 @@ function Header({ toggleDarkMode, isDark }) {
     <div className="relative">
       <header className="fixed top-0 left-0 w-full z-50 bg-[#F8F8FF] dark:bg-zinc-900">
         <div className="flex w-full h-20 font-Figtree items-center border-black shadow-lg dark:shadow-2xl">
-          <div className="font-semibold text-4xl pl-6 m-4 mr-6">MovieBase</div>
+          <div className="font-semibold text-4xl pl-6 m-4 mr-6">MovieTime</div>
           <div className="flex justify-between gap-6 mt-1">
             <Link to="/home" className="">
               Home
             </Link>
             <Link to="/popular">Popular</Link>
             <Link to="/shows">Shows</Link>
-            <button onClick={toggleDarkMode}>Dark mode</button>
           </div>
 
           {/* Search Bar */}
           <div className="flex items-center ml-auto pr-5 relative">
+          <button
+            className="ml-auto pr-5"
+            onClick={toggleDarkMode}>{isDark ? <Sun /> : <Moon />}</button>
             <input
               className={`border ${isDark ? "bg-zinc-900 border-white" : "bg-white border-zinc-900"} w-60 h-8 indent-3 rounded-2xl max-md:w-40 max-md:indent-2 max-md:text-sm`}
               placeholder="Search"
@@ -65,13 +68,13 @@ function Header({ toggleDarkMode, isDark }) {
             />
             <Search
               strokeWidth={2.25}
-              className="cursor-pointer absolute transform translate-x-52 w-5 transition-transform hover:scale-105
+              className="cursor-pointer absolute transform translate-x-64 w-5 transition-transform hover:scale-105
                        max-md:translate-x-32"
             />
 
             {/* Search Results Dropdown */}
             {searchQuery.length > 0 && (
-              <div className="absolute top-full mt-1 left-0 w-60 max-md:w-40 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50">
+              <div className="absolute top-full mt-1 left-11 w-60 max-md:w-40 bg-[#F8F8FF] dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50">
                 {isSearching ? (
                   <div className="p-2 text-center">Searching...</div>
                 ) : searchResults.length > 0 ? (
