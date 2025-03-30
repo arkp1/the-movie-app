@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import movieData from "../Utils/Utils";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { IoAddCircle } from "react-icons/io5";
 
 function MediaDetails() {
   const { type, id } = useParams(); // Get both type and id from URL
@@ -19,7 +21,7 @@ function MediaDetails() {
       if (!data) throw new Error("No data received");
       return data;
     },
-    suspense: true
+    suspense: true,
   });
 
   if (isError)
@@ -52,7 +54,7 @@ function MediaDetails() {
   }
 
   const trailerUrl = media.trailer;
-  const trailerEmbedUrl = convertToEmbedUrl(trailerUrl);
+  const trailerEmbedUrl = trailerUrl ? convertToEmbedUrl(trailerUrl) : null;
   console.log(trailerEmbedUrl);
 
   return (
@@ -82,7 +84,13 @@ function MediaDetails() {
             {media.title} ({media.year || "N/A"})
             <span className="font-normal text-base md:text-xl pl-3">
               {`${media.runtime} mins` || "N/A"}
-            </span>
+            </span> 
+            <div className="flex flex-row pt-2">
+              <button className="flex items-center gap-2 text-base font-normal px-5 hover:bg-gray-200 border border-black dark:border-[#F8F8FF] dark:hover:text-black border-2 rounded-xl">
+                <IoAddCircle />
+                Watch Later
+              </button>
+            </div>
           </h1>
         </div>
 
@@ -124,7 +132,7 @@ function MediaDetails() {
           </p>
           <p>
             <span className="font-bold">Trailer: </span>
-            <iframe
+            {trailerEmbedUrl ? (<iframe
               src={trailerEmbedUrl}
               frameborder="0"
               allow="autoplay; encrypted-media"
@@ -132,7 +140,7 @@ function MediaDetails() {
               title="video"
               width={400}
               height={200}
-            />
+            />) : "N/A" }
           </p>
         </div>
       </div>

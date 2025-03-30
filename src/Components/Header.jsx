@@ -53,6 +53,9 @@ function Header({ toggleDarkMode, isDark }) {
             </Link>
             <Link to="/popular">Popular</Link>
             <Link to="/shows">Shows</Link>
+            <a href={`${import.meta.env.VITE_BACKEND_URL}/auth`}>
+            Sign In
+            </a>
           </div>
 
           {/* Search Bar */}
