@@ -1,10 +1,16 @@
-import express, { json } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import fs from "fs";
+import fetch from "node-fetch";
+
 
 dotenv.config();
 
-const tokens = JSON.parse(fs.readFileSync("./tokens.json", "utf8"));
+let tokens = JSON.parse(fs.readFileSync("./tokens.json", "utf8"));
+
+const clientID = process.env.TRAKT_CLIENT_ID;
+const clientSecret = process.env.TRAKT_CLIENT_SECRET;
+const redirectURI = process.env.TRAKT_REDIRECT_URI;
 
 const app = express();
 const port = 8000;
@@ -16,10 +22,6 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`server running on port: ${port}`);
 });
-
-const clientID = process.env.TRAKT_CLIENT_ID;
-const clientSecret = process.env.TRAKT_CLIENT_SECRET;
-const redirectURI = process.env.TRAKT_REDIRECT_URI;
 
 app.get("/auth", (req, res) => {
   const url = `https://api.trakt.tv/oauth/authorize?response_type=code&client_id=${clientID}&redirect_uri=${redirectURI}`;
@@ -85,9 +87,9 @@ app.get("/refresh", async (req, res) => {
     });
 
     const newTokens = await response.json();
-    fs.writeFileSync("./tokens.json", JSON.stringify(newTokens, null, 2));
     Object.assign(tokens, newTokens);
-    res.send("Token refreshed and saved.");
+    fs.writeFileSync("./tokens.json", JSON.stringify(tokens, null, 2));
+    res.send(newTokens);
   } catch (e) {
     console.error("refresh error", e);
     res.status(500).send("Failed to refresh token");
