@@ -17,7 +17,14 @@ Responsive UI for mobile & desktop
 🛠️ Tech Stack
 
 
+
 React.js
+
+Node.js
+
+Express.js
+
+MongoDB
 
 HTML/CSS
 
