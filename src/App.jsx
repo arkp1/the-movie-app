@@ -10,6 +10,7 @@ import MediaDetails from "./Components/MediaDetails";
 import SuspenseWrapper from "./Components/SuspenseWrapper";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MediaDetailsSkeleton from "./Components/MediaDetailsSkeleton";
+import Profile from "./Components/Profile";
 
 function App() {
   const [isDark, setIsDark] = useState(false);
@@ -49,20 +50,22 @@ function App() {
             <Header toggleDarkMode={toggleDarkMode} isDark={isDark} />
           </div>
           <SuspenseWrapper>
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
+            <Routes>
+              <Route path="/profile" element={<Profile />}></Route>
+              <Route path="/" element={<Home />}></Route>
+              <Route
+                path=":type/:id"
+                element={
+                  <Suspense fallback={<MediaDetailsSkeleton />}>
+                    <MediaDetails />
+                  </Suspense>
+                }
+              ></Route>
 
-        
-            <Route path=":type/:id" element={
-            <Suspense fallback={<MediaDetailsSkeleton />}>
-            <MediaDetails />
-            </Suspense>}
-            ></Route>
-
-            <Route path="/home" element={<Home />}></Route>
-            <Route path="/popular" element={<Popular />}></Route>
-            <Route path="/shows" element={<Shows />}></Route>
-          </Routes>
+              <Route path="/home" element={<Home />}></Route>
+              <Route path="/popular" element={<Popular />}></Route>
+              <Route path="/shows" element={<Shows />}></Route>
+            </Routes>
           </SuspenseWrapper>
         </div>
       </QueryClientProvider>

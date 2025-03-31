@@ -1,15 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Sun, Moon } from "lucide-react";
-import { CiDark } from "react-icons/ci";
 import movieData from "../Utils/Utils";
+import fetchUserProfile from "../Utils/FetchProfile";
 
 function Header({ toggleDarkMode, isDark }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const navigate = useNavigate();
 
+  //Check Auth Status
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const result = await fetchUserProfile();
+        setIsLoggedIn(result?.isAuthenticated || false);
+      } catch (error) {
+        setIsLoggedIn(false);
+      }
+    };
+    checkAuthStatus();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        setIsLoggedIn(false);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  //SEARCH
   useEffect(() => {
     const timerId = setTimeout(() => {
       if (searchQuery.trim().length > 2) {
@@ -42,6 +74,10 @@ function Header({ toggleDarkMode, isDark }) {
     setSearchResults([]);
   };
 
+  const handleSignIn = () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth`;
+  };
+
   return (
     <div className="relative">
       <header className="fixed top-0 left-0 w-full z-50 bg-[#F8F8FF] dark:bg-zinc-900">
@@ -53,21 +89,26 @@ function Header({ toggleDarkMode, isDark }) {
             </Link>
             <Link to="/popular">Popular</Link>
             <Link to="/shows">Shows</Link>
-            <a href={`${import.meta.env.VITE_BACKEND_URL}/auth`}>
-            Sign In
-            </a>
+            {isLoggedIn ? (
+              <button onClick={handleSignOut}>Sign Out</button>
+            ) : (
+              <button onClick={handleSignIn}>Sign In</button>
+            )}
+            <Link to={"/profile"}>Profile</Link>
           </div>
 
           {/* Search Bar */}
           <div className="flex items-center ml-auto pr-5 relative">
-          <button
-            className="ml-auto pr-5"
-            onClick={toggleDarkMode}>{isDark ? <Sun /> : <Moon />}</button>
+            <button className="ml-auto pr-5" onClick={toggleDarkMode}>
+              {isDark ? <Sun /> : <Moon />}
+            </button>
             <input
-              className={`border ${isDark ? "bg-zinc-900 border-white" : "bg-white border-zinc-900"} w-60 h-8 indent-3 rounded-2xl max-md:w-40 max-md:indent-2 max-md:text-sm`}
+              className={`border ${
+                isDark ? "bg-zinc-900 border-white" : "bg-white border-zinc-900"
+              } w-60 h-8 indent-3 rounded-2xl max-md:w-40 max-md:indent-2 max-md:text-sm`}
               placeholder="Search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)} 
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Search
               strokeWidth={2.25}
