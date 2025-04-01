@@ -11,9 +11,10 @@ import SuspenseWrapper from "./Components/SuspenseWrapper";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MediaDetailsSkeleton from "./Components/MediaDetailsSkeleton";
 import Profile from "./Components/Profile";
+import Watchlist from "./Components/Watchlist";
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -45,13 +46,19 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <div className="bg-[#F8F8FF] text-black dark:bg-zinc-900 dark:text-[#F8F8FF] min-h-screen">
+        <div
+          className={`text-black dark:text-[#F8F8FF] min-h-screen
+            ${
+              isDark
+                ? "bg-gradient-to-r from-[#2c3e50] to-[#1F1C18]"
+                : "bg-gradient-to-r from-[#cfd9df] to-[#e2ebf0]"
+            }`}
+        >
           <div className="pt-16">
             <Header toggleDarkMode={toggleDarkMode} isDark={isDark} />
           </div>
           <SuspenseWrapper>
             <Routes>
-              <Route path="/profile" element={<Profile />}></Route>
               <Route path="/" element={<Home />}></Route>
               <Route
                 path=":type/:id"
@@ -65,6 +72,8 @@ function App() {
               <Route path="/home" element={<Home />}></Route>
               <Route path="/popular" element={<Popular />}></Route>
               <Route path="/shows" element={<Shows />}></Route>
+              <Route path="/profile" element={<Profile />}></Route>
+              <Route path="/watchlist" element={<Watchlist />}></Route>
             </Routes>
           </SuspenseWrapper>
         </div>

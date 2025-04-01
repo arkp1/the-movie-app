@@ -124,11 +124,11 @@ app.get("/watchlist", async (req, res) => {
 });
 
 app.get("/profile", async (req, res) => {
-  console.log("Request session ID:", req.sessionID); // Log the session ID
+  console.log("Request session ID:", req.sessionID);
 
   const sessionData = await Session.findOne({ sessionId: req.sessionID });
 
-  console.log("Session data:", sessionData); // Log the session da
+  console.log("Session data:", sessionData);
   try {
     const sessionData = await Session.findOne({ sessionId: req.sessionID });
     if (!sessionData) {
@@ -143,7 +143,9 @@ app.get("/profile", async (req, res) => {
       },
     });
     const data = await response.json();
-    res.json(data);
+    const avatarURL = data.user.images.avatar.full;
+
+    res.json({ ...data, avatarURL });
   } catch (e) {
     console.error("error", e);
     res.status(500).send("Failed to fetch user settings");
@@ -185,17 +187,19 @@ app.get("/refresh", async (req, res) => {
 });
 
 //Logout
-app.post('/logout', async (req, res) => {
+app.post("/logout", async (req, res) => {
   try {
     // Find and delete the session from DB
-    const session = await Session.findOneAndDelete({ sessionId: req.sessionID });
+    const session = await Session.findOneAndDelete({
+      sessionId: req.sessionID,
+    });
 
     // If we have a stored access token, revoke it via Trakt API
     if (session?.accessToken) {
-      await fetch('https://api.trakt.tv/oauth/revoke', {
-        method: 'POST',
+      await fetch("https://api.trakt.tv/oauth/revoke", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           token: session.accessToken,
@@ -207,10 +211,10 @@ app.post('/logout', async (req, res) => {
 
     // Clear the session cookie
     req.session.destroy();
-    res.clearCookie('connect.sid'); 
+    res.clearCookie("connect.sid");
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Logout error:', error);
-    res.status(500).json({ error: 'Logout failed' });
+    console.error("Logout error:", error);
+    res.status(500).json({ error: "Logout failed" });
   }
 });

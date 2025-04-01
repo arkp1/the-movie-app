@@ -24,9 +24,7 @@ function Popular() {
   });
 
   const movies = popularItems?.map((item) => {
-    const posterUrl = `https://img.omdbapi.com/?i=${item.ids.imdb}&apikey=${
-      import.meta.env.VITE_OMDB_API_KEY
-    }`;
+    const posterUrl = `https://img.omdbapi.com/?i=${item.ids.imdb}&apikey=${import.meta.env.VITE_OMDB_API_KEY}`;
     const id = item?.ids?.imdb || item?.ids?.slug || item?.ids?.trakt;
 
     return {

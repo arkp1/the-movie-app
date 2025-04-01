@@ -80,7 +80,9 @@ function Header({ toggleDarkMode, isDark }) {
 
   return (
     <div className="relative">
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#F8F8FF] dark:bg-zinc-900">
+      <header className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
+        isDark ? "backdrop-blur-3xl" : "bg-[#cfd9df]/40 backdrop-blur-2xl"
+      }`}>
         <div className="flex w-full h-20 font-Figtree items-center border-black shadow-lg dark:shadow-2xl">
           <div className="font-semibold text-4xl pl-6 m-4 mr-6">MovieTime</div>
           <div className="flex justify-between gap-6 mt-1">
@@ -94,7 +96,8 @@ function Header({ toggleDarkMode, isDark }) {
             ) : (
               <button onClick={handleSignIn}>Sign In</button>
             )}
-            <Link to={"/profile"}>Profile</Link>
+            <Link to="/profile">Profile</Link>
+            <Link to="/watchlist">Watchlist</Link>
           </div>
 
           {/* Search Bar */}
@@ -104,7 +107,7 @@ function Header({ toggleDarkMode, isDark }) {
             </button>
             <input
               className={`border ${
-                isDark ? "bg-zinc-900 border-white" : "bg-white border-zinc-900"
+                isDark ? "bg-zinc-900 border-white" : "bg-white/60 border-zinc-900" 
               } w-60 h-8 indent-3 rounded-2xl max-md:w-40 max-md:indent-2 max-md:text-sm`}
               placeholder="Search"
               value={searchQuery}

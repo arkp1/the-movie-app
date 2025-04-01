@@ -31,7 +31,7 @@ function Profile() {
   if (isLoading) return <div className="pt-10">Loading...</div>;
   if (error) return <div className="pt-10">{error}</div>;
   if (!profileData)
-    return <div className="pt-10">No profile data available.</div>;
+    return <div className="">No profile data available.</div>;
 
   return (
     <div className="pt-10">
@@ -43,6 +43,7 @@ function Profile() {
               src={profileData.user.images.avatar.full}
               alt="Profile"
               style={{ width: "100px", height: "100px" }}
+              crossOrigin="anonymous"
             />
           )}
         </div>

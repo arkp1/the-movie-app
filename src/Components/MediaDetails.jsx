@@ -6,7 +6,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { IoAddCircle } from "react-icons/io5";
 
 function MediaDetails() {
-  const { type, id } = useParams(); // Get both type and id from URL
+  const { type, id } = useParams();
   const navigate = useNavigate();
 
   const {
@@ -35,7 +35,6 @@ function MediaDetails() {
 
   if (!response) return <h1>No data found</h1>;
 
-  // Handle both direct object and nested responses
   const media = response.movie || response.show || response;
   const mediaType = response.movie ? "movie" : "show";
 
@@ -58,7 +57,7 @@ function MediaDetails() {
   console.log(trailerEmbedUrl);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white dark:bg-zinc-900 font-Figtree pb-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-Figtree pb-2">
       {/* Poster Column */}
       <div className="mt-6 flex justify-center">
         <div className="overflow-hidden shadow-lg w-[340px] h-[500px] max-md:w-[280px] max-md:h-[420px]">
