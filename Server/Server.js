@@ -125,10 +125,9 @@ app.get("/watchlist", async (req, res) => {
 
 
 app.post("/watchlist/add", async (req, res) => {
-  console.log("Watchlist endpoint - Session ID:", req.sessionID);
-  console.log("Cookies:", req.headers.cookie);
   try {
     const { type, id } = req.body; // type = "movie" or "show"
+    console.log("Adding item:", { type, id });
     const sessionData = await Session.findOne({ sessionId: req.sessionID });
 
     if (!sessionData) {
@@ -137,9 +136,9 @@ app.post("/watchlist/add", async (req, res) => {
 
     const body = {};
     if (type === "movie") {
-      body.movies = [{ ids: { trakt: id } }];
+      body.movies = [{ ids: { imdb: id } }];
     } else if (type === "show") {
-      body.shows = [{ ids: { trakt: id } }];
+      body.shows = [{ ids: { imdb: id } }];
     }
 
     const response = await fetch("https://api.trakt.tv/sync/watchlist", {
