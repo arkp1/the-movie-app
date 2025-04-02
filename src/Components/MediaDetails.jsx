@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import movieData from "../Utils/Utils";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { IoAddCircle } from "react-icons/io5";
+import { getWatchlist, addToWatchlist, removeFromWatchlist } from "../Utils/HandleWatchlist";
 
 function MediaDetails() {
   const { type, id } = useParams();
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
+  const [watchlist, setWatchlist] = useState([]);
   const navigate = useNavigate();
 
   const {
@@ -56,8 +59,44 @@ function MediaDetails() {
   const trailerEmbedUrl = trailerUrl ? convertToEmbedUrl(trailerUrl) : null;
   console.log(trailerEmbedUrl);
 
+  //Watch Later Toggle
+  useEffect(() => {
+    const fetchWatchlist = async () => {
+
+      try {
+        const result = await getWatchlist();
+        console.log("Watchlist data:", result)
+        if (result?.watchlistData) {
+          setWatchlist(result.watchlistData);
+          setIsInWatchlist(
+            result.watchlistData.some((item) => item.id === media.id)
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching watchlist:", error);
+      }
+    };
+    fetchWatchlist();
+  }, [media.id]);
+
+  const handleWatchLaterToggle = async () => {
+    try {
+      if (isInWatchlist) {
+        await removeFromWatchlist(media.ids.imdb, mediaType);
+        setWatchlist((prev) => prev.filter((item) => item.id !== media.id));
+      } else {
+        const response = await addToWatchlist(media.id, mediaType);
+        console.log("Add to watchlist response:", response);
+        setWatchlist((prev) => [...prev, { ...media }]);
+      }
+      setIsInWatchlist(!isInWatchlist);
+    } catch (error) {
+      console.error("Failed to update watchlist:", error);
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-Figtree pb-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-Figtree">
       {/* Poster Column */}
       <div className="mt-6 flex justify-center">
         <div className="overflow-hidden shadow-lg w-[340px] h-[500px] max-md:w-[280px] max-md:h-[420px]">
@@ -83,11 +122,16 @@ function MediaDetails() {
             {media.title} ({media.year || "N/A"})
             <span className="font-normal text-base md:text-xl pl-3">
               {`${media.runtime} mins` || "N/A"}
-            </span> 
+            </span>
             <div className="flex flex-row pt-2">
-              <button className="flex items-center gap-2 text-base font-normal px-5 hover:bg-gray-200 border border-black dark:border-[#F8F8FF] dark:hover:text-black border-2 rounded-xl">
-                <IoAddCircle />
-                Watch Later
+              <button
+                onClick={handleWatchLaterToggle}
+                className="flex items-center gap-2 text-base font-normal px-5 hover:bg-gray-200 border border-black dark:border-[#F8F8FF] dark:hover:text-black border-2 rounded-xl"
+              >
+                {isInWatchlist ? <IoAddCircle /> : <IoAddCircleOutline />}
+                {isInWatchlist
+                  ? "Remove from Watch Later"
+                  : "Add to Watch Later"}
               </button>
             </div>
           </h1>
@@ -131,15 +175,19 @@ function MediaDetails() {
           </p>
           <p>
             <span className="font-bold">Trailer: </span>
-            {trailerEmbedUrl ? (<iframe
-              src={trailerEmbedUrl}
-              frameborder="0"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-              title="video"
-              width={400}
-              height={200}
-            />) : "N/A" }
+            {trailerEmbedUrl ? (
+              <iframe
+                src={trailerEmbedUrl}
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                title="video"
+                width={400}
+                height={200}
+              />
+            ) : (
+              "N/A"
+            )}
           </p>
         </div>
       </div>

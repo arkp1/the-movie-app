@@ -123,6 +123,82 @@ app.get("/watchlist", async (req, res) => {
   }
 });
 
+
+app.post("/watchlist/add", async (req, res) => {
+  console.log("Watchlist endpoint - Session ID:", req.sessionID);
+  console.log("Cookies:", req.headers.cookie);
+  try {
+    const { type, id } = req.body; // type = "movie" or "show"
+    const sessionData = await Session.findOne({ sessionId: req.sessionID });
+
+    if (!sessionData) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const body = {};
+    if (type === "movie") {
+      body.movies = [{ ids: { trakt: id } }];
+    } else if (type === "show") {
+      body.shows = [{ ids: { trakt: id } }];
+    }
+
+    const response = await fetch("https://api.trakt.tv/sync/watchlist", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${sessionData.accessToken}`,
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": clientID,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (e) {
+    console.error("Error adding to watchlist:", e);
+    res.status(500).send("Failed to add to watchlist");
+  }
+});
+
+
+app.post("/watchlist/remove", async (req, res) => {
+  try {
+    const { type, id } = req.body; // type = "movie" or "show"
+    const sessionData = await Session.findOne({ sessionId: req.sessionID });
+
+    if (!sessionData) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const body = {};
+    if (type === "movie") {
+      body.movies = [{ ids: { trakt: id } }];
+    } else if (type === "show") {
+      body.shows = [{ ids: { trakt: id } }];
+    }
+
+    const response = await fetch("https://api.trakt.tv/sync/watchlist/remove", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${sessionData.accessToken}`,
+        "Content-Type": "application/json",
+        "trakt-api-version": "2",
+        "trakt-api-key": clientID,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (e) {
+    console.error("Error removing from watchlist:", e);
+    res.status(500).send("Failed to remove from watchlist");
+  }
+});
+
+
+
 app.get("/profile", async (req, res) => {
   console.log("Request session ID:", req.sessionID);
 

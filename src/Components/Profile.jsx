@@ -15,7 +15,7 @@ function Profile() {
         if (result?.isAuthenticated) {
           setProfileData(result.profile);
         } else {
-          setError("Please sign in to view your profile.");
+          return
         }
       } catch (err) {
         setError("Failed to fetch profile data.");
@@ -31,7 +31,8 @@ function Profile() {
   if (isLoading) return <div className="pt-10">Loading...</div>;
   if (error) return <div className="pt-10">{error}</div>;
   if (!profileData)
-    return <div className="">No profile data available.</div>;
+    return <div className="flex justify-center items-center text-2xl">
+      Please sign in to view your profile.</div>;
 
   return (
     <div className="pt-10">
