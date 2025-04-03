@@ -92,9 +92,11 @@ function Header({ toggleDarkMode, isDark }) {
         }`}
       >
         <div className="flex w-full h-20 font-Figtree items-center border-black shadow-lg dark:shadow-2xl">
+          <Link to="/">
           <div className="font-semibold text-4xl pl-6 m-4 mr-6 max-md:text-4xl max-md:pl-3 max-md:m-2">
             MovieTime
           </div>
+          </Link>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex justify-between gap-6 mt-1">
