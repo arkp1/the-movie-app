@@ -100,19 +100,19 @@ function Header({ toggleDarkMode, isDark }) {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex justify-between gap-6 mt-1">
-            <Link to="/home">Home</Link>
-            <Link to="/popular">Popular</Link>
-            <Link to="/shows">Shows</Link>
-            <Link to="/profile">Profile</Link>
-            <Link to="/watchlist">Watchlist</Link>
+            <Link to="/home" className="underline-animation">Home</Link>
+            <Link to="/popular" className="underline-animation">Popular</Link>
+            <Link to="/shows" className="underline-animation">Shows</Link>
+            <Link to="/profile" className="underline-animation">Profile</Link>
+            <Link to="/watchlist" className="underline-animation">Watchlist</Link>
           </div>
 
           {/* Desktop Search and Auth Section */}
           <div className="hidden md:flex items-center ml-auto pr-5 relative">
             {isLoggedIn ? (
-              <button className="mr-5" onClick={handleSignOut}>Sign Out</button>
+              <button className="mr-5 underline-animation" onClick={handleSignOut}>Sign Out</button>
             ) : (
-              <button className="mr-5" onClick={handleSignIn}>Sign In</button>
+              <button className="mr-5 underline-animation" onClick={handleSignIn}>Sign In</button>
             )}
             <button className="ml-auto pr-5" onClick={toggleDarkMode}>
               {isDark ? <Sun /> : <Moon />}
