@@ -43,7 +43,7 @@ function MediaDetails() {
   if (!response) return <h1>No data found</h1>;
 
   const media = response.movie || response.show || response;
-  const mediaType = response.movie ? "movie" : "show";
+  const mediaType = response.movie ? "movies" : "shows";
 
   const posterUrl = media?.ids?.imdb
     ? `https://img.omdbapi.com/?i=${media.ids.imdb}&apikey=${
@@ -63,38 +63,50 @@ function MediaDetails() {
   const trailerEmbedUrl = trailerUrl ? convertToEmbedUrl(trailerUrl) : null;
   console.log(trailerEmbedUrl);
 
-  //Watch Later Toggle
-  // Update the watchlist check
-useEffect(() => {
-  const fetchWatchlist = async () => {
+  useEffect(() => {
+    const fetchWatchlist = async () => {
+      try {
+        const result = await getWatchlist();
+        console.log("Current watchlist:", result);
+
+        if (result) {
+          const isInList = result.some((item) => {
+            const mediaItem = item.movie || item.show;
+          });
+          setIsInWatchlist(isInList);
+          console.log("Is in watchlist:", isInList);
+        }
+      } catch (error) {
+        console.error("Watchlist check error:", error);
+      }
+    };
+    fetchWatchlist();
+  }, [media.ids.imdb]);
+
+  // Update the toggle handler
+  const handleWatchLaterToggle = async () => {
+    // const correctType = mediaType === 'movie' ? 'movies' : 'shows';
     try {
-      const result = await getWatchlist();
-      setIsInWatchlist(
-        result.some(item => {
-          const mediaItem = item.movie || item.show;
-          return mediaItem.ids.imdb === media.ids.imdb; // Compare IMDB IDs
-        })
-      );
+      if (isInWatchlist) {
+        await removeFromWatchlist(id, type);
+        setWatchlist((prev) =>
+          prev.filter((item) => {
+            const m = item.movie || item.show;
+          })
+        );
+        console.log("Removed from watchlist");
+      } else {
+        const result = await addToWatchlist(id, type);
+        setWatchlist((prev) => [...prev, { ...media }]);
+        console.log("Added to watchlist:", result);
+      }
+      setIsInWatchlist(!isInWatchlist);
+      const updatedList = await getWatchlist();
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Toggle error:", error);
+      // Optionally show error to user
     }
   };
-  fetchWatchlist();
-}, [media.ids.imdb]); // Use IMDB ID as dependency
-
-// Update the toggle handler
-const handleWatchLaterToggle = async () => {
-  try {
-    if (isInWatchlist) {
-      await removeFromWatchlist(media.ids.imdb, mediaType); // Use IMDB ID
-    } else {
-      await addToWatchlist(media.ids.imdb, mediaType); // Use IMDB ID
-    }
-    setIsInWatchlist(!isInWatchlist);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-Figtree">
@@ -141,12 +153,7 @@ const handleWatchLaterToggle = async () => {
         <div className="font-normal text-lg md:text-xl max-md:text-base">
           <p>{media.overview || "No overview available."}</p>
 
-          {media.tagline && (
-            <p className="italic">
-              <span className="font-bold">Tagline: </span>
-              {media.tagline}
-            </p>
-          )}
+          {media.tagline && <p className="italic">{media.tagline}</p>}
 
           <>
             <p>

@@ -13,7 +13,7 @@ const clientSecret = process.env.TRAKT_CLIENT_SECRET;
 const redirectURI = process.env.TRAKT_REDIRECT_URI;
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 app.use(
   cors({
@@ -123,10 +123,10 @@ app.get("/watchlist", async (req, res) => {
   }
 });
 
-
 app.post("/watchlist/add", async (req, res) => {
   try {
     const { type, id } = req.body; // type = "movie" or "show"
+    console.log(req.body);
     console.log("Adding item:", { type, id });
     const sessionData = await Session.findOne({ sessionId: req.sessionID });
 
@@ -135,9 +135,9 @@ app.post("/watchlist/add", async (req, res) => {
     }
 
     const body = {};
-    if (type === "movie") {
+    if (type === "movies") {
       body.movies = [{ ids: { imdb: id } }];
-    } else if (type === "show") {
+    } else if (type === "shows") {
       body.shows = [{ ids: { imdb: id } }];
     }
 
@@ -152,14 +152,20 @@ app.post("/watchlist/add", async (req, res) => {
       body: JSON.stringify(body),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Trakt API error:", errorData);
+      return res.status(response.status).json(errorData);
+    }
+
     const data = await response.json();
+    console.log("Watchlist items:", data.length);
     res.json(data);
   } catch (e) {
-    console.error("Error adding to watchlist:", e);
-    res.status(500).send("Failed to add to watchlist");
+    console.error("Server error:", e);
+    res.status(500).json({ error: e.message });
   }
 });
-
 
 app.post("/watchlist/remove", async (req, res) => {
   try {
@@ -171,10 +177,10 @@ app.post("/watchlist/remove", async (req, res) => {
     }
 
     const body = {};
-    if (type === "movie") {
-      body.movies = [{ ids: { trakt: id } }];
-    } else if (type === "show") {
-      body.shows = [{ ids: { trakt: id } }];
+    if (type === "movies") {
+      body.movies = [{ ids: { imdb: id } }];
+    } else if (type === "shows") {
+      body.shows = [{ ids: { imdb: id } }];
     }
 
     const response = await fetch("https://api.trakt.tv/sync/watchlist/remove", {
@@ -188,15 +194,25 @@ app.post("/watchlist/remove", async (req, res) => {
       body: JSON.stringify(body),
     });
 
+    // In /watchlist/add endpoint:
     const data = await response.json();
-    res.json(data);
+
+    if (data.added && data.added.movies) {
+      console.log(`Successfully added ${data.added.movies} items`);
+    } else if (data.existing && data.existing.movies) {
+      console.log(`Item already exists in watchlist`);
+    }
+
+    res.json({
+      success: true,
+      traktResponse: data,
+      addedCount: data.added?.movies || 0,
+    });
   } catch (e) {
     console.error("Error removing from watchlist:", e);
     res.status(500).send("Failed to remove from watchlist");
   }
 });
-
-
 
 app.get("/profile", async (req, res) => {
   console.log("Request session ID:", req.sessionID);

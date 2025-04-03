@@ -50,15 +50,13 @@ function Watchlist() {
             const media = item.movie || item.show;
             return (
               <Link
-                key={`${media.id}`}
+                key={`${media.ids.imdb}`}
                 to={`/movies/${media.ids.imdb}`}
                 className="group"
               >
                 <div className="relative overflow-hidden rounded-lg shadow-md transition-all duration-300 group-hover:-translate-y-1">
                   <img
-                    src={`https://img.omdbapi.com/?i=${media.ids.imdb}&apikey=${
-                      import.meta.env.VITE_OMDB_API_KEY
-                    }`}
+                    src={`https://img.omdbapi.com/?i=${media.ids.imdb}&apikey=${import.meta.env.VITE_OMDB_API_KEY}`}
                     alt={media.title}
                     className="w-full h-80 max-h-full object-cover"
                     onError={(e) => {

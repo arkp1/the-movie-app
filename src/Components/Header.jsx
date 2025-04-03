@@ -27,17 +27,20 @@ function Header({ toggleDarkMode, isDark }) {
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
-        method: 'POST',
-        credentials: 'include'
-      });
-      
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+
       if (response.ok) {
         setIsLoggedIn(false);
-        navigate('/home');
+        navigate("/home");
       }
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
 
@@ -80,9 +83,11 @@ function Header({ toggleDarkMode, isDark }) {
 
   return (
     <div className="relative pb-8">
-      <header className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
-        isDark ? "backdrop-blur-3xl" : "bg-[#cfd9df]/40 backdrop-blur-2xl"
-      }`}>
+      <header
+        className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
+          isDark ? "backdrop-blur-3xl" : "bg-[#cfd9df]/40 backdrop-blur-2xl"
+        }`}
+      >
         <div className="flex w-full h-20 font-Figtree items-center border-black shadow-lg dark:shadow-2xl">
           <div className="font-semibold text-4xl pl-6 m-4 mr-6">MovieTime</div>
           <div className="flex justify-between gap-6 mt-1">
@@ -91,23 +96,30 @@ function Header({ toggleDarkMode, isDark }) {
             </Link>
             <Link to="/popular">Popular</Link>
             <Link to="/shows">Shows</Link>
-            {isLoggedIn ? (
-              <button onClick={handleSignOut}>Sign Out</button>
-            ) : (
-              <button onClick={handleSignIn}>Sign In</button>
-            )}
             <Link to="/profile">Profile</Link>
             <Link to="/watchlist">Watchlist</Link>
           </div>
 
           {/* Search Bar */}
           <div className="flex items-center ml-auto pr-5 relative">
+          {isLoggedIn ? (
+              <button 
+              className="mr-5"
+              onClick={handleSignOut}>Sign Out</button>
+            ) : (
+              <button
+              className="mr-5"
+               onClick={handleSignIn}>Sign In</button>
+            )}
             <button className="ml-auto pr-5" onClick={toggleDarkMode}>
               {isDark ? <Sun /> : <Moon />}
             </button>
+     
             <input
               className={`border ${
-                isDark ? "bg-zinc-900 border-white" : "bg-white/60 border-zinc-900" 
+                isDark
+                  ? "bg-zinc-900 border-white"
+                  : "bg-white/60 border-zinc-900"
               } w-60 h-8 indent-3 rounded-2xl max-md:w-40 max-md:indent-2 max-md:text-sm`}
               placeholder="Search"
               value={searchQuery}
@@ -115,13 +127,13 @@ function Header({ toggleDarkMode, isDark }) {
             />
             <Search
               strokeWidth={2.25}
-              className="cursor-pointer absolute transform translate-x-64 w-5 transition-transform hover:scale-105
-                       max-md:translate-x-32"
+              className="cursor-pointer absolute right-7 top-1/2 transform -translate-y-1/2 w-5 transition-transform hover:scale-105"
+              
             />
 
             {/* Search Results Dropdown */}
             {searchQuery.length > 0 && (
-              <div className="absolute top-full mt-1 left-11 w-60 max-md:w-40 bg-[#F8F8FF] dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50">
+              <div className="absolute top-full mt-1 left-28 w-60 max-md:w-40 bg-[#F8F8FF] dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg z-50">
                 {isSearching ? (
                   <div className="p-2 text-center">Searching...</div>
                 ) : searchResults.length > 0 ? (
