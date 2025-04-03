@@ -46,6 +46,7 @@ Create a .env file in the root directory and add:
 
 ini
 VITE_BACKEND_URL=your_backend_url
+
 VITE_MOVIE_API_KEY=your_api_key
 
 4️⃣ Start the development server:
