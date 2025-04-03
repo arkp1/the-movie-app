@@ -67,6 +67,9 @@ function Home() {
   return (
     <div className="container mx-auto px-4 max-w-7xl">
         <>
+        <div className="flex justify-center items-center md:hidden">
+          (better optimised for PC.)
+        </div>
           <h1 className="text-3xl font-bold mb-8 md:pl-6">Trending Movies</h1>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
