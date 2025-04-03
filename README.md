@@ -32,16 +32,16 @@ API: Uses external movie database API for fetching content
 
 1️⃣ Clone the repository:
 
-sh
 git clone https://github.com/yourusername/movietime.git
+
 cd movietime
 
 2️⃣ Install dependencies:
 
-sh
 npm install
 
 3️⃣ Set up environment variables:
+
 Create a .env file in the root directory and add:
 
 ini
@@ -50,7 +50,6 @@ VITE_MOVIE_API_KEY=your_api_key
 
 4️⃣ Start the development server:
 
-sh
 npm run dev
 
 🔗 Live Demo
