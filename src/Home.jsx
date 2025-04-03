@@ -67,7 +67,7 @@ function Home() {
   return (
     <div className="container mx-auto px-4 max-w-7xl">
         <>
-          <h1 className="text-3xl font-bold mb-8">Trending Movies</h1>
+          <h1 className="text-3xl font-bold mb-8 md:pl-6">Trending Movies</h1>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {movies?.map((movie) => (
@@ -80,7 +80,7 @@ function Home() {
                   <img
                     src={movie.poster}
                     alt={movie.title}
-                    className="w-full h-80 max-h-full object-cover"
+                    className="w-full md:h-80 max-h-full object-cover"
                     onError={(e) => {
                       e.target.classList.add("bg-gray-400");
                     }}

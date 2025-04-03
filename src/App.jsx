@@ -1,7 +1,5 @@
 import Header from "./Components/Header";
 import { useEffect, useState, Suspense } from "react";
-import Content from "./Components/Content";
-import VideoPlayer from "./Vidplayer";
 import { Route, Routes } from "react-router-dom";
 import Popular from "./Components/Popular";
 import Home from "./Home";
