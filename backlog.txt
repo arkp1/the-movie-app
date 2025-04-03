@@ -1,4 +1,0 @@
-- Watchlist
-- Posters from rapidAPi
-- dark mode icon
-- hover effects in header
