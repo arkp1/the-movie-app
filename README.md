@@ -1,31 +1,74 @@
-🎬 Movie App
+🎬 MovieTime
+
+MovieTime is a movie and TV show discovery web app where users can search for movies, view popular content, manage their watchlist, and access their profiles. It features authentication, dark mode, and a responsive UI. Uses Trakt API.
 
 
-A sleek and responsive Movie App built with React.js that lets users explore trending, top-rated, and upcoming movies. Users can search for their favorite films, view detailed info, and discover new content—all in one place.
+🚀 Features
 
-⚙️ Features
+🔍 Search – Find movies and TV shows in real time
 
+🌟 Popular Movies & Shows – Browse trending content
 
-Browse trending, top-rated, and upcoming movies
+🎭 Detailed Pages – View descriptions, ratings, and details
 
-Search movies by title
+📜 Watchlist – Save movies and shows for later
 
-View detailed movie info: poster, release date, rating, overview
+🔐 User Authentication – Sign in and manage your profile
 
-Responsive UI for mobile & desktop
+🌙 Dark Mode – Toggle between light and dark themes
+
+📱 Responsive UI – Optimized for both desktop and mobile
 
 🛠️ Tech Stack
 
+Frontend: React.js, React Router, Tailwind CSS
 
+Backend: Node.js, Express.js
 
-React.js
+Database: MongoDB (for user authentication & watchlist)
 
-Node.js
+API: Uses external movie database API for fetching content
 
-Express.js
+🎯 Setup & Installation
 
-MongoDB
+1️⃣ Clone the repository:
 
-HTML/CSS
+sh
+Copy
+Edit
+git clone https://github.com/yourusername/movietime.git
+cd movietime
+2️⃣ Install dependencies:
 
-Trakt API
+sh
+Copy
+Edit
+npm install
+3️⃣ Set up environment variables:
+Create a .env file in the root directory and add:
+
+ini
+Copy
+Edit
+VITE_BACKEND_URL=your_backend_url
+VITE_MOVIE_API_KEY=your_api_key
+4️⃣ Start the development server:
+
+sh
+Copy
+Edit
+npm run dev
+🖼️ Screenshots
+Light Mode	Dark Mode
+🔗 Live Demo
+Check out the live version here: MovieTime
+
+📜 License
+
+This project is licensed under the MIT License.
+
+🤝 Contributing
+
+Contributions are welcome! Feel free to fork the repo, create a new branch, and submit a pull request.
+
+⭐ Enjoyed using MovieTime? Give it a star on GitHub! ⭐
