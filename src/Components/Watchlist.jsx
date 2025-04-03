@@ -30,7 +30,7 @@ function Watchlist() {
     getWatchlist();
   }, []);
 
-  if (isLoading) return <div className="pt-10">Loading...</div>;
+  if (isLoading) return <div className="pt-10 flex justify-center items-center text-xl">Loading...</div>;
   if (error) return <div className="pt-10">{error}</div>;
   if (!Watchlist.length)
     return (

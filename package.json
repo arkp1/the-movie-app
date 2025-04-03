@@ -21,6 +21,7 @@
     "express-session": "^1.18.1",
     "lucide-react": "^0.477.0",
     "mongoose": "^8.13.1",
+    "motion": "^12.6.3",
     "nodemon": "^3.1.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

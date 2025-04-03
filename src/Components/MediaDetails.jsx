@@ -9,6 +9,7 @@ import {
   addToWatchlist,
   removeFromWatchlist,
 } from "../Utils/HandleWatchlist";
+import { motion } from "motion/react";
 
 function MediaDetails() {
   const { type, id } = useParams();
@@ -105,6 +106,11 @@ function MediaDetails() {
   };
 
   return (
+    <motion.div
+    initial={{ opacity: 0, y: 60 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, ease: "easeOut" }}
+      > 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-Figtree">
       {/* Poster Column - Same for both mobile and desktop */}
       <div className="mt-6 flex justify-center">
@@ -196,6 +202,7 @@ function MediaDetails() {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 }
 
