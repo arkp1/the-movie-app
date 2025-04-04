@@ -45,7 +45,7 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <div
-          className={`text-black dark:text-[#F8F8FF] min-h-screen pb-5
+          className={`text-black dark:text-[#F8F8FF] min-w-fit md:min-w-full min-h-screen pb-5
             ${
               isDark
                 ? "bg-gradient-to-r from-[#2c3e50] to-[#1F1C18]"

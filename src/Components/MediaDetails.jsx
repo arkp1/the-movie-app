@@ -192,7 +192,7 @@ function MediaDetails() {
                   allow="autoplay; encrypted-media"
                   allowFullScreen
                   title="video"
-                  className="w-full md:w-[400px] h-[200px] max-md:h-[280px]"
+                  className="w-full md:w-[400px] h-[240px] max-md:h-[240px]"
                 />
               </div>
             ) : (
