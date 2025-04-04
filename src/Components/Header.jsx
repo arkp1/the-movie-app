@@ -85,7 +85,7 @@ function Header({ toggleDarkMode, isDark }) {
   };
 
   return (
-    <div className="relative pb-8">
+    <div className="relative pb-8 w-[340px] max-md:w-[280px]">
       <header
         className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
           isDark ? "backdrop-blur-3xl" : "bg-[#cfd9df]/40 backdrop-blur-2xl"
