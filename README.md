@@ -18,7 +18,7 @@ MovieTime is a movie and TV show discovery web app where users can search for mo
 
 📱 Responsive UI – Optimized for both desktop and mobile
 
-🛠️ Tech Stack used
+🛠️ Tech Stack
 
 Frontend: React.js, React Router, Tailwind CSS
 
