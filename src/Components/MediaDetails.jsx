@@ -185,7 +185,7 @@ function MediaDetails() {
           <div className="mt-4">
             <p className="font-bold">Trailer: </p>
             {trailerEmbedUrl ? (
-              <div className="aspect-w-16 aspect-h-9 max-md:w-full">
+              <div className="w-full max-md:w-full">
                 <iframe
                   src={trailerEmbedUrl}
                   frameBorder="0"

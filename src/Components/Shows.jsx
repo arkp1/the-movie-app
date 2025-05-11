@@ -8,7 +8,6 @@ function Shows() {
   const [page, setPage] = useState(1);
   const {
     data: trendingShows,
-    isLoading,
     isFetching,
     isError,
     error,
@@ -23,7 +22,6 @@ function Shows() {
     keepPreviousData: true,
   });
 
-  // Transform the data for rendering
   const shows = trendingShows?.map((item) => {
     const posterUrl = item.show.ids.imdb
       ? `https://img.omdbapi.com/?i=${item.show.ids.imdb}&apikey=${
@@ -42,7 +40,7 @@ function Shows() {
     };
   });
 
-  // Pagination logic
+  // pagination logic
   const totalPages = 10;
 
   const handlePageChange = (newPage) => {
@@ -62,7 +60,7 @@ function Shows() {
   }
 
   return (
-    <div className="container mx-auto px-4 max-w-7xl">
+    <div className="container mx-auto max-w-7xl">
       <>
         <h1 className="text-3xl font-bold mb-8 md:pl-6">Trending Shows</h1>
 

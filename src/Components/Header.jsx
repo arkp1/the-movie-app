@@ -85,15 +85,15 @@ function Header({ toggleDarkMode, isDark }) {
   };
 
   return (
-    <div className="relative pb-8 w-[340px] max-md:w-[280px]">
+    // <div className="relative pb-8">
       <header
-        className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xl ${
+        className={`fixed top-0 left-0 z-50 backdrop-blur-xl ${
           isDark ? "backdrop-blur-3xl" : "bg-[#cfd9df]/40 backdrop-blur-2xl"
         }`}
       >
-        <div className="flex w-full h-20 font-Figtree items-center border-black shadow-lg dark:shadow-2xl">
+        <div className="flex w-screen h-20 font-Figtree items-center border-black shadow-lg dark:shadow-2xl">
           <Link to="/">
-          <div className="font-semibold text-4xl pl-6 m-4 mr-6 max-md:text-4xl max-md:pl-3 max-md:m-2">
+          <div className="font-semibold text-4xl pl-6 m-4 mr-6 max-md:text-3xl max-md:pl-3 max-md:m-2">
             MovieTime
           </div>
           </Link>
@@ -259,7 +259,7 @@ function Header({ toggleDarkMode, isDark }) {
           </div>
         )}
       </header>
-    </div>
+    // </div>
   );
 }
 

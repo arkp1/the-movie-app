@@ -8,7 +8,6 @@ function Popular() {
   const [page, setPage] = useState(1);
   const {
     data: popularItems,
-    isLoading,
     isFetching,
     isError,
     error,
@@ -57,7 +56,7 @@ function Popular() {
   }
 
   return (
-    <div className="container mx-auto px-4 max-w-7xl">
+    <div className="container mx-auto max-w-7xl">
       <>
         <h1 className="text-3xl font-bold mb-8 md:pl-6">Popular Movies</h1>
 
@@ -77,7 +76,7 @@ function Popular() {
                 <img
                   src={movie.poster}
                   alt={movie.title}
-                  className="w-full md:h-80 max-h-full object-cover"
+                  className="w-screen md:h-80 max-h-full object-cover"
                   onError={(e) => {
                     e.target.classList.add("bg-gray-400");
                   }}
